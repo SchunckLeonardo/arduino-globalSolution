@@ -1,0 +1,261 @@
+[
+    {
+        "id": "88d1c914dda28f0c",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "895d698dedb8cd97",
+        "type": "mqtt in",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "topic": "/ThinkIOT/values",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2c57be57f72d891b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 320,
+        "y": 240,
+        "wires": [
+            [
+                "b42d3cbd64302c96",
+                "a50c7f922c55c7ad"
+            ]
+        ]
+    },
+    {
+        "id": "b42d3cbd64302c96",
+        "type": "trigger",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "op1": "",
+        "op2": "{\"type\":\"message\",\"chatId\":\"6983832385\",\"content\":\"Bem vindo ao AceleraSUS, onde o nosso tempo é a sua vida!\"}",
+        "op1type": "nul",
+        "op2type": "json",
+        "duration": "1",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 630,
+        "y": 320,
+        "wires": [
+            [
+                "4428df5109ee7d5a"
+            ]
+        ]
+    },
+    {
+        "id": "4428df5109ee7d5a",
+        "type": "telegram sender",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "bot": "8a59afc7935414f4",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 890,
+        "y": 320,
+        "wires": [
+            [
+                "258f943891b92a43"
+            ]
+        ]
+    },
+    {
+        "id": "258f943891b92a43",
+        "type": "function",
+        "z": "88d1c914dda28f0c",
+        "name": "function 1",
+        "func": "var opts = {\n    reply_markup: JSON.stringify({\n        \"inline_keyboard\": [[\n            {\n                \"text\": \"Verificar lotação do hospital\",\n                \"callback_data\": \"1\"\n            },\n            {\n                \"text\": \"Chamar o próximo da fila\",\n                \"callback_data\": \"2\"\n            },\n            {\n                \"text\": \"Ver a hora atual\",\n                \"callback_data\": \"3\"\n            },\n            {\n                \"text\": \"Verificar Status do Paciente\",\n                \"callback_data\": \"4\"\n            }\n        ]]\n    })\n}\n\nmsg.error = false\nmsg.payload.content = 'Selecione uma opção:'\nmsg.payload.options = opts\nmsg.payload.chatId = \"6983832385\"\nmsg.payload.type = \"message\"\n\nreturn [msg]",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 340,
+        "wires": [
+            [
+                "2191ed778436926c"
+            ]
+        ]
+    },
+    {
+        "id": "2191ed778436926c",
+        "type": "telegram sender",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "bot": "8a59afc7935414f4",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1330,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f89b3774b8b4b8c",
+        "type": "telegram event",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "bot": "8a59afc7935414f4",
+        "event": "callback_query",
+        "autoanswer": false,
+        "x": 720,
+        "y": 540,
+        "wires": [
+            [
+                "86443dc2949ff981"
+            ]
+        ]
+    },
+    {
+        "id": "86443dc2949ff981",
+        "type": "function",
+        "z": "88d1c914dda28f0c",
+        "name": "function 2",
+        "func": "msg.callback = msg.payload\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 540,
+        "wires": [
+            [
+                "807eaf8013be434a"
+            ]
+        ]
+    },
+    {
+        "id": "d23b561bc40f5151",
+        "type": "debug",
+        "z": "88d1c914dda28f0c",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "807eaf8013be434a",
+        "type": "function",
+        "z": "88d1c914dda28f0c",
+        "name": "function 3",
+        "func": "let randomNumber = Math.floor(Math.random() * 100)\n\nif(msg.callback.content == 1) {\n    let tempHospital = global.get(\"temperatura\")\n    if(tempHospital > 20) {\n        msg.payload.content = `O hospital está lotado, Temperatura ambiente de ${tempHospital}`\n    } else {\n        msg.payload.content = `O hospital está com uma movimentação tranquila, Temperatura ambiente de ${tempHospital}`\n    }\n}\nif (msg.callback.content == 2) {\n    msg.payload.content = `O próximo da fila é: ${randomNumber}`\n}\nif (msg.callback.content == 3) {\n    let currentTime = new Date().toLocaleTimeString();\n    msg.payload.content = `A hora atual é: ${currentTime}`;\n}\nif (msg.callback.content == 4) {\n    let patientStatus = Math.random() < 0.5 ? \"Estável\" : \"Em observação\";\n    msg.payload.content = `O status do paciente ${randomNumber} é: ${patientStatus}`;\n}\n\nmsg.payload.type = \"message\"\nmsg.payload.chatId = \"6983832385\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 540,
+        "wires": [
+            [
+                "f8bb20ebb0e2b63a"
+            ]
+        ]
+    },
+    {
+        "id": "f8bb20ebb0e2b63a",
+        "type": "telegram sender",
+        "z": "88d1c914dda28f0c",
+        "name": "",
+        "bot": "8a59afc7935414f4",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1330,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a50c7f922c55c7ad",
+        "type": "function",
+        "z": "88d1c914dda28f0c",
+        "name": "function 4",
+        "func": "const temp = msg.payload.temp\n\nglobal.set(\"temperatura\", temp)\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 240,
+        "wires": [
+            [
+                "d23b561bc40f5151"
+            ]
+        ]
+    },
+    {
+        "id": "2c57be57f72d891b",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "8a59afc7935414f4",
+        "type": "telegram bot",
+        "botname": "globaledgebot",
+        "usernames": "itzleorainha",
+        "chatids": "6983832385",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
