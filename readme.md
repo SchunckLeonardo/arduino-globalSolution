@@ -17,8 +17,6 @@ Para enfrentar o problema da superlotação hospitalar e otimizar o processo de 
 4. **Ver a Hora Atual:**
    - Incluímos uma funcionalidade simples para visualizar a hora atual, proporcionando uma experiência mais completa aos usuários.
 
-Peço desculpas pela confusão. Vamos reformular as instruções de uso, focando na configuração do sistema:
-
 ## Instruções de Configuração e Uso:
 
 ### Requisitos Prévios:
