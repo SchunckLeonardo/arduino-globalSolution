@@ -1,3 +1,7 @@
+# Nome e RMS
+- Leonardo Schunck Rainha RM99902
+- Kayky Oliveira Schunck RM99756
+
 ## Problema de Saúde Abordado
 A superlotação em hospitais e as longas filas de espera para atendimento são desafios significativos na área da saúde, impactando negativamente a eficiência e a qualidade dos serviços prestados.
 
